@@ -9,6 +9,7 @@ const profileroute=require('./Routes/Profile');
 const messageroute=require('./Routes/Messages');
 const orderdelayrouter = require('./Routes/DelayRefund');
 const blacklistrouter = require('./Routes/Blacklist');
+const paymentrouter = require('./Routes/Payment');
 const userrouter = require('./Routes/user');
 const fileupload = require('express-fileupload');
 const cloudinary = require('cloudinary').v2;
@@ -60,6 +61,8 @@ app.use('/report',authenticateToken, Reportrouter);
 app.use('/message',authenticateToken, messageroute);
 app.use('/delayrefund',authenticateToken, orderdelayrouter);
 app.use('/blacklist',authenticateToken, blacklistrouter);
+app.use('/payment',authenticateToken, paymentrouter);
+
 app.get('/test', (req, res) => {
   res.status(200).json({ message: 'App is running' });
 });

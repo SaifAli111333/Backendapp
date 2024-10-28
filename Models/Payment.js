@@ -2,8 +2,13 @@ const mongoose=require("mongoose");
 const Paymentschema = new mongoose.Schema({
   
     _id :mongoose.Schema.Types.ObjectId,
-    totalamount :Number,
+    PaymentID: { 
+        type: Number,  
+        unique: true,
+        require:true,
+      },
     paidamount  :Number,
-    pay : Number,
+    PaidBy: String,
+
 })
 module.exports=mongoose.model("payment",Paymentschema);

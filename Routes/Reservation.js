@@ -27,7 +27,10 @@ router.post('/', authenticateToken, async (req, res) => {
        });
 
         const result = await newReservation.save();
-        res.status(201).json(result);
+        res.status(201).json({
+            ...result._doc,
+            expiresAt: new Date(Date.now() + 60 * 60 * 1000) 
+        });
     } catch (err) {
         console.error('Error adding reservation:', err);
         res.status(500).json({ error: err.message });
