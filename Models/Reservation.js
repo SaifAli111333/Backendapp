@@ -14,7 +14,11 @@ const Reservationschema = new mongoose.Schema({
    createdAt: { 
     type: Date, 
     default: Date.now,
-    expires: '1h' // Set TTL index to 1 hour
+    expires: '1h' 
+  },
+  isActive: { 
+    type: Boolean,
+    default: false 
   }
 })
 module.exports = mongoose.model('Reservation', Reservationschema);

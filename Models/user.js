@@ -21,6 +21,7 @@ const userschema = new mongoose.Schema({
     banktitle:String,
     bankname:String,
     banknumber:String,
-    paymentmethod:String
+    paymentmethod:String,
+    profilepic:String 
 })
 module.exports=mongoose.model("user",userschema);

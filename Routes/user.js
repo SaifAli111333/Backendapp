@@ -6,8 +6,25 @@ const mongoose=require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt =require("jsonwebtoken");
 const authenticateToken = require('../MIddleware/Authentication');
+const logout = require('../MIddleware/AuthenticateLogout');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: 'dsw1ve0fv', 
+    api_key: '228268892666568',  
+    api_secret: 'Dg3A_3n5CP_XZckMLVGDIQmMJgs', 
+});
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'profile_pictures', 
+        allowed_formats: ['jpg', 'png', 'jpeg'],
+    },
+});
 
-router.post('/signup', async (req, res, next) => {
+const upload = multer({ storage: storage });
+router.post('/signup',upload.single('profilepic'),  async (req, res, next) => {
     try {
         const { 
             password, retypepassword, usertype, email, firstname, lastname, 
@@ -50,7 +67,8 @@ router.post('/signup', async (req, res, next) => {
             banktitle,
             bankname,
             banknumber,
-            paymentmethod
+            paymentmethod,
+            profilepic: req.file.path
         });
 
         const result = await US.save();
@@ -271,4 +289,5 @@ router.post('/signin', (req, res) => {
         });
 });
 
+//router.post('/logout', authenticateToken, logout);
 module.exports = router;

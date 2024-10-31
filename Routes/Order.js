@@ -5,29 +5,90 @@ const mongoose = require('mongoose');
 const authenticateToken = require('../MIddleware/Authentication');
 const getNextSequenceValue = require('../Models/getNextSequenceValue');
 const Product = require('../Models/Product');
+const Reservation = require('../Models/Reservation');
+
+// router.post('/', authenticateToken, async (req, res) => {
+//     try {
+//         const nextId = await getNextSequenceValue('orderId'); 
+
+//         const { productId: productIdFromBody, createdBy, Reservedby } = req.body;
+
+//         if (!productIdFromBody) {
+//             return res.status(400).json({ error: 'ProductID is required' });
+//         }
+//         if (!createdBy) {
+//             return res.status(400).json({ error: 'CreatedBy is required' });
+//         }
+//         if (!Reservedby) {
+//             return res.status(400).json({ error: 'ReservedBy is required' });
+//         }
+
+//         const productId = Number(productIdFromBody);
+//         const product = await Product.findOne({ ProductID: productId });
+
+//         if (!product) {
+//             return res.status(404).json({ error: 'Product not found' });
+//         }
+
+//         const newOrder = new Order({
+//             _id: new mongoose.Types.ObjectId(),
+//             OrderID: nextId,
+//             Reservedby: Reservedby,
+//             ProductID: productId,
+//             Createdby: createdBy,
+//             Orderedby: req.user.email,
+//             Market: product.Market,
+//             ProductType: product.ProductType,
+//             sellerid: product.sellerid,
+//             Keyword: product.Keyword,
+//             ASIN: product.ASIN,
+//             SoldBy: product.SoldBy,
+//             Brandname: product.Brandname,
+//             ProductPrice: product.ProductPrice,
+//             totalCommission:product.totalCommission,
+//             Ordernumber: req.body.Ordernumber,
+//             Customeremail:req.body.Customeremail,
+//             awzlink:req.body.awzlink,
+//             OrderPhoto:req.body.OrderPhoto,
+//             RefundPhoto:req.body.RefunfPhoto,
+//             ReviewPhoto:req.body.ReviewPhoto,
+//             OrderType:req.body.OrderType,
+//             //OrderType: OrderType || 'ordered'
+
+//         });
+
+//         const result = await newOrder.save();
+//         res.status(201).json({ result });
+
+//     } catch (err) {
+//         console.error('Error adding order:', err);
+//         res.status(500).json({ error: err.message });
+//     }
+// });
 router.post('/', authenticateToken, async (req, res) => {
     try {
         const nextId = await getNextSequenceValue('orderId'); 
 
-        const { productId: productIdFromBody, createdBy, Reservedby } = req.body;
+        const { productId: productIdFromBody, createdBy, Reservedby, reservationId } = req.body;
 
-        if (!productIdFromBody) {
-            return res.status(400).json({ error: 'ProductID is required' });
-        }
-        if (!createdBy) {
-            return res.status(400).json({ error: 'CreatedBy is required' });
-        }
-        if (!Reservedby) {
-            return res.status(400).json({ error: 'ReservedBy is required' });
+        if (!productIdFromBody || !createdBy || !Reservedby || !reservationId) {
+            return res.status(400).json({ error: 'ProductID, CreatedBy, ReservedBy, and ReservationID are required.' });
         }
 
-        // Convert productIdFromBody to a number if it's received as a string
         const productId = Number(productIdFromBody);
         const product = await Product.findOne({ ProductID: productId });
 
         if (!product) {
             return res.status(404).json({ error: 'Product not found' });
         }
+
+        const reservation = await Reservation.findOne({ ReservationID: reservationId });
+        if (!reservation) {
+            return res.status(404).json({ error: 'Reservation not found' });
+        }
+
+        reservation.isActive = true; 
+        await reservation.save(); 
 
         const newOrder = new Order({
             _id: new mongoose.Types.ObjectId(),
@@ -44,16 +105,14 @@ router.post('/', authenticateToken, async (req, res) => {
             SoldBy: product.SoldBy,
             Brandname: product.Brandname,
             ProductPrice: product.ProductPrice,
-            totalCommission:product.totalCommission,
+            totalCommission: product.totalCommission,
             Ordernumber: req.body.Ordernumber,
-            Customeremail:req.body.Customeremail,
-            awzlink:req.body.awzlink,
-            OrderPhoto:req.body.OrderPhoto,
-            RefundPhoto:req.body.RefunfPhoto,
-            ReviewPhoto:req.body.ReviewPhoto,
-            OrderType:req.body.OrderType,
-            //OrderType: OrderType || 'ordered'
-
+            Customeremail: req.body.Customeremail,
+            awzlink: req.body.awzlink,
+            OrderPhoto: req.body.OrderPhoto,
+            RefundPhoto: req.body.RefundPhoto,
+            ReviewPhoto: req.body.ReviewPhoto,
+            OrderType: req.body.OrderType,
         });
 
         const result = await newOrder.save();
@@ -64,6 +123,7 @@ router.post('/', authenticateToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 router.put('/:id', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
