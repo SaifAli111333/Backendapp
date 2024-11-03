@@ -52,7 +52,7 @@ cloudinary.config({
 
 app.use(cors({
   //origin: 'http://localhost:3001', 
-  origin: 'http://65.0.184.91',
+  origin: 'http://3.110.195.171',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   credentials: true 
