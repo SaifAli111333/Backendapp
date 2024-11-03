@@ -19,7 +19,12 @@ const bodyparser = require("body-parser");
 const authenticateToken = require('./MIddleware/Authentication'); 
 const cors = require('cors');
 
-mongoose.connect('mongodb+srv://saif64459:db123@cluster0.8b1vihb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+// mongoose.connect('mongodb+srv://saif64459:db123@cluster0.8b1vihb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+//   serverSelectionTimeoutMS: 30000,
+//   //useNewUrlParser: true,
+//   //useUnifiedTopology: true,
+// });
+mongoose.connect('mongodb+srv://saif64459:0313Saif7209@clusterpointmarketting.1uaqw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPointMarketting', {
   serverSelectionTimeoutMS: 30000,
   //useNewUrlParser: true,
   //useUnifiedTopology: true,
@@ -46,7 +51,8 @@ cloudinary.config({
 });
 
 app.use(cors({
-  origin: 'http://localhost:3001', 
+  //origin: 'http://localhost:3001', 
+  origin: 'http://65.0.184.91',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   credentials: true 

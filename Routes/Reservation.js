@@ -19,7 +19,6 @@ router.post('/', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'CreatedBy is required' });
         }
 
-        // Fetch the product using the custom ProductID
         const product = await Product.findOne({ ProductID: productId }); // Use ProductID to find
 
         if (!product) {
@@ -34,7 +33,6 @@ router.post('/', authenticateToken, async (req, res) => {
             return res.status(403).json({ error: 'Total sale limit has been reached for this product.' });
         }
 
-        // Create a new reservation
         const newReservation = new Reservation({
             _id: new mongoose.Types.ObjectId(), // Generate a new ObjectId for the reservation
             ReservationID: nextId,
@@ -45,7 +43,6 @@ router.post('/', authenticateToken, async (req, res) => {
 
         const result = await newReservation.save();
 
-        // Use the product._id (which is an ObjectId) for the update operation
         await Product.findByIdAndUpdate(product._id, {
             $inc: { TodayRemaining: -1, TotalRemaining: -1 }
         });

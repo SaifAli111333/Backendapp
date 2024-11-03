@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Reservation = require('./Models/Reservation');
 const Product = require('./Models/Product');
 
-const mongoURI = 'mongodb+srv://saif64459:db123@cluster0.8b1vihb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = 'mongodb+srv://saif64459:0313Saif7209@clusterpointmarketting.1uaqw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPointMarketting';
 
 mongoose.connect(mongoURI, {
   serverSelectionTimeoutMS: 30000,

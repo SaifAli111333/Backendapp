@@ -66,7 +66,7 @@ router.get('/:id', authenticateToken, (req, res) => {
   Product.findById(req.params.id)
     .then(product => {
       if (product) {
-        res.status(200).json({
+        res.status(200).json({  
           product: product
         });
       } else {
