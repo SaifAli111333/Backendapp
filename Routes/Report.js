@@ -39,6 +39,8 @@ router.post('/', authenticateToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+    //"cloudinary": "^2.4.0",
+
 router.get('/', authenticateToken, async (req, res) => {
     try {
         const { email, usertype } = req.user; 
