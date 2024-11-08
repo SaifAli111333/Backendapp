@@ -24,11 +24,12 @@ const cors = require('cors');
 //   //useNewUrlParser: true,
 //   //useUnifiedTopology: true,
 // });
-mongoose.connect('mongodb+srv://saif64459:0313Saif7209@clusterpointmarketting.1uaqw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPointMarketting', {
-  serverSelectionTimeoutMS: 30000,
-  //useNewUrlParser: true,
-  //useUnifiedTopology: true,
-});
+//mongoose.connect('mongodb+srv://saif64459:0313Saif7209@clusterpointmarketting.1uaqw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPointMarketting', {
+  mongoose.connect('mongodb+srv://saif64459:0313Saif7209@clusterpointmarketting.1uaqw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPointMarketting', {
+serverSelectionTimeoutMS: 30000,
+  ssl: true,
+ // sslValidate: true
+});//
 
 mongoose.connection.on('error', err => {
   console.log('Connection failed', err);
@@ -52,7 +53,7 @@ cloudinary.config({
 
 app.use(cors({
   //origin: 'http://localhost:3001', 
-  origin: ['http://15.206.169.137', 'http://localhost:3001'],
+  origin: [process.env.FRONTEND_URL || 'http://localhost:3001', 'http://15.206.19.211'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   credentials: true 

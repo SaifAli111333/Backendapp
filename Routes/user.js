@@ -24,7 +24,7 @@ const storage = new CloudinaryStorage({
 });
 
 const upload = multer({ storage: storage });
-router.post('/signup',upload.single('profilepic'),  async (req, res, next) => {
+router.post('/signup',/*upload.single('profilepic'),*/  async (req, res, next) => {
     try {
         const { 
             password, retypepassword, usertype, email, firstname, lastname, 
@@ -68,7 +68,7 @@ router.post('/signup',upload.single('profilepic'),  async (req, res, next) => {
             bankname,
             banknumber,
             paymentmethod,
-            profilepic: req.file.path
+            //profilepic: req.file.path
         });
 
         const result = await US.save();
